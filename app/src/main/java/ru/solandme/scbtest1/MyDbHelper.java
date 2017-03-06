@@ -42,7 +42,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addWebPage(WebPage webPage) {
+    public void saveWebPage(WebPage webPage) {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {

@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
         webView = (WebView) findViewById(R.id.webView);
         lastUpdate = (TextView) findViewById(R.id.lastUpdate);
 
-        loadWebPage();
+        updateViews();
         scheduleAlarm();
     }
 
-    private void loadWebPage() {
+    private void updateViews() {
         WebPage webPage;
-        webPage = getWebPageText();
+        webPage = getWebPage();
         webView.getSettings().setDefaultTextEncodingName("utf-8");
         webView.loadData(webPage.getText(), "text/html; charset=utf-8", "utf-8");
         lastUpdate.setText(webPage.getLastUpdate());
@@ -76,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
             int resultCode = intent.getIntExtra("resultCode", RESULT_CANCELED);
             if (resultCode == RESULT_OK) {
                 Toast.makeText(getApplicationContext(), "New Date received", Toast.LENGTH_SHORT).show();
-                loadWebPage();
+                updateViews();
             }
         }
     };
 
-    private WebPage getWebPageText() {
+    private WebPage getWebPage() {
         MyDbHelper helper = new MyDbHelper(getApplicationContext());
         return helper.getLastWebPageFromDB();
     }

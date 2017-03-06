@@ -7,7 +7,6 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import okhttp3.ResponseBody;
@@ -46,7 +45,7 @@ public class MyWebService extends IntentService {
         in.putExtra("resultCode", Activity.RESULT_OK);
 
         MyDbHelper helper = new MyDbHelper(getApplicationContext());
-        helper.addWebPage(webPage);
+        helper.saveWebPage(webPage);
         helper.close();
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(in);
