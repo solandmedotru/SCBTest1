@@ -28,7 +28,7 @@ public class MyWebService extends IntentService {
                 .baseUrl("https://ru.wikipedia.org/")
                 .build();
 
-        IWiki webService = retrofit.create(IWiki.class);
+        IWikipediaApi webService = retrofit.create(IWikipediaApi.class);
         Call<ResponseBody> call = webService.getWebpage();
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("MM dd yyyy HH:mm:ss");
