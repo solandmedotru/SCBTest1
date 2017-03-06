@@ -10,9 +10,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import ru.solandme.scbtest1.POJO.WebPage;
 
 public class MainActivity extends AppCompatActivity {
     WebView webView;
+    TextView lastUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +25,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         webView = (WebView) findViewById(R.id.webView);
+        lastUpdate = (TextView) findViewById(R.id.lastUpdate);
+
+        loadWebPage();
         scheduleAlarm();
+    }
+
+    private void loadWebPage() {
+        WebPage webPage;
+        webPage = getWebPageText();
+        webView.getSettings().setDefaultTextEncodingName("utf-8");
+        webView.loadData(webPage.getText(), "text/html; charset=utf-8", "utf-8");
+        lastUpdate.setText(webPage.getLastUpdate());
     }
 
     public void scheduleAlarm() {
@@ -59,10 +75,14 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             int resultCode = intent.getIntExtra("resultCode", RESULT_CANCELED);
             if (resultCode == RESULT_OK) {
-                //TODO считать новые данные с базы и отобразить их
-                webView.getSettings().setDefaultTextEncodingName("utf-8");
-                webView.loadData(intent.getStringExtra("resultValue"), "text/html; charset=utf-8", "utf-8");
+                Toast.makeText(getApplicationContext(), "New Date received", Toast.LENGTH_SHORT).show();
+                loadWebPage();
             }
         }
     };
+
+    private WebPage getWebPageText() {
+        MyDbHelper helper = new MyDbHelper(getApplicationContext());
+        return helper.getLastWebPageFromDB();
+    }
 }
